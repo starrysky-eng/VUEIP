@@ -14,21 +14,21 @@
           <b-form-input class="content" v-model="ipCountNapt" />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
-          <div v-for="item in form.Napt" :key="item">
+          <div v-for="item in form.Napt" :key="item.ip">
             <span class="content pl-3"
-              >{{ item }}
+              >{{ item.ip }}
               <span v-if="form.Napt.length > 1" class="ml-3">
-                <button
+                <b-icon-dash-square
                   class="remoteIcon"
                   @click="removeNapt(item)"
-                >...</button>
+                />
               </span>
               <span v-else /> </span
             ><br />
           </div>
         </b-form-group>
-<br>
-<br>
+        <br />
+        <br />
         <!--NAT用グローバルIP-->
         <b-form-group class="col-8" label="NAT用グローバルIP">
           <span class="content">現在 1個/ 上限 12個</span><br />
@@ -38,7 +38,7 @@
           <span class="content pl-3">グローバルIP</span><br />
           <div v-for="item in form.Nat" :key="item">
             <span class="content pl-3"
-              >{{ item }}
+              >{{ item.ip }}
               <span v-if="form.Nat.length > 1" class="ml-3">
                 <b-icon-dash-square
                   class="remoteIcon"
@@ -52,8 +52,24 @@
       </div>
     </div>
     <footer class="modal-footer justify-content-end btn-container">
-      <!-- <b-button variant="primary" @click="update">変更</b-button> -->
-      <router-link :to="{name: 'Confirm',params:{result: ipCountNapt,length: ipCountNaptLenght}}" tag="b-button" @click="update">変更</router-link>
+      <router-link
+        :to="{
+          name: 'Confirm',
+          params: {
+            addNapt: ipCountNapt,
+            naptLength: ipCountNaptLenght,
+            napt: form.Napt,
+            naptDeletedArray: delNapt,
+
+            addNat: ipCountNat,
+            natLength: ipCountNatLenght,
+            nat: form.Nat,
+            natDeletedArray: delNat,
+          },
+        }"
+        tag="b-button"
+        >変更</router-link
+      >
       <b-button variant="outline-primary" @click="cancel">キャンセル</b-button>
     </footer>
   </div>
@@ -61,8 +77,16 @@
 
 <script>
 const GlobalIpNaptNat = {
-  NAPT: ["44.124.186.05/32", "44.124.186.06/32", "246.124.186.05/32"],
-  NAT: ["44.124.186.05/32", "44.124.186.06/32", "246.124.186.05/32"],
+  NAPT: [
+    { ip: "44.124.186.05/32" },
+    { ip: "44.124.186.06/32" },
+    { ip: "246.124.186.05/32" },
+  ],
+  NAT: [
+    { ip: "44.124.186.05/32" },
+    { ip: "44.124.186.06/32" },
+    { ip: "246.124.186.05/32" },
+  ],
 };
 
 export default {
@@ -74,55 +98,35 @@ export default {
         Napt: [],
         Nat: [],
       },
-      // 変更前のグローバルIP
-      ipNaptBefore: [],
-      ipNatBefore: [],
-      // 変更前のグローバルIP数
-      ipCountNaptBefore: 0,
-      ipCountNatBefore: 0,
-      // 変更後のグローバルIP数
+
       ipCountNapt: 0,
       ipCountNaptLenght: 0,
       ipCountNat: 0,
+      ipCountNatLenght: 0,
       // 削除されたIP（Napt）
       delNapt: [],
       // 削除されたIP（Nat）
       delNat: [],
-      // 確認画面への転送データ
-      confirmdata: {
-        addNapt: "",
-        napt: [],
-        addNat: "",
-        nat: [],
-      },
     };
   },
   async mounted() {
     // グローバルIP
-    this.ipNaptBefore = GlobalIpNaptNat.NAPT;
-    this.ipNatBefore = GlobalIpNaptNat.NAT;
     this.form.Napt = GlobalIpNaptNat.NAPT;
     this.form.Nat = GlobalIpNaptNat.NAT;
     // グローバルIP数
-    this.ipCountNaptBefore = GlobalIpNaptNat.NAPT.length;
-    this.ipCountNatBefore = GlobalIpNaptNat.NAT.length;
     this.ipCountNapt = GlobalIpNaptNat.NAPT.length;
-    this.ipCountNat = GlobalIpNaptNat.NAT.length;
     this.ipCountNaptLenght = GlobalIpNaptNat.NAPT.length;
+    this.ipCountNat = GlobalIpNaptNat.NAT.length;
+    this.ipCountNatLenght = GlobalIpNaptNat.NAT.length;
   },
   methods: {
     removeNapt(target) {
-      this.form.Napt.splice(this.form.Napt.indexOf(target),1)
-      
+      let naptResult = this.form.Napt.splice(this.form.Napt.indexOf(target), 1);
+      this.delNapt.push({ ip: naptResult[0].ip });
     },
     removeNat(target) {
-    },
-    cancel(){
-      
-    },
-    update() {
-      // 確認画面への転送データ
-      // 確認画面へ遷移
+      let natResult = this.form.Nat.splice(this.form.Nat.indexOf(target), 1);
+      this.delNat.push({ ip: natResult[0].ip });
     },
   },
 };

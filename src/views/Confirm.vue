@@ -11,60 +11,73 @@
         <b-form-group class="col-8" label="NAPT用グローバルIP">
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
-          <span class="content" style="color: red">追加{{result - length}}個</span><br />
+          <span class="content" style="color: red"
+            >追加{{ addNapt - naptLength }}個 </span
+          ><br />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
-          <!-- <div v-for="item in form.Napt" :key="item">
+          <div
+            v-for="item in naptDeletedArray"
+            :key="item.ip"
+            style="color: red"
+          >
             <span class="content pl-3"
-              >{{ item }}
-              <span v-if="form.Napt.length > 1" class="ml-3">
-                <b-icon-dash-square
-                  class="remoteIcon"
-                  @click="removeNapt(item)"
-                />
-              </span>
-              <span v-else /> </span
-            ><br />
-          </div> -->
+              >{{ item.ip }}
+              <br />
+            </span>
+          </div>
+          <div v-for="item in napt" :key="item.ip">
+            <span class="content pl-3"
+              >{{ item.ip }}
+              <br />
+            </span>
+          </div>
         </b-form-group>
-<br>
-<br>
+        <br />
+        <br />
         <!--NAT用グローバルIP-->
         <b-form-group class="col-8" label="NAT用グローバルIP">
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
+          <span class="content" style="color: red"
+            >追加{{ addNat - natLength }}個 </span
+          ><br />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
-          <!-- <div v-for="item in form.Nat" :key="item">
+          <div
+            v-for="item in natDeletedArray"
+            :key="item.ip"
+            style="color: red"
+          >
             <span class="content pl-3"
-              >{{ item }}
-              <span v-if="form.Nat.length > 1" class="ml-3">
-                <b-icon-dash-square
-                  class="remoteIcon"
-                  @click="removeNat(item)"
-                />
-              </span>
-              <span v-else /> </span
-            ><br />
-          </div> -->
+              >{{ item.ip }}
+              <br />
+            </span>
+          </div>
+          <div v-for="item in nat" :key="item.ip">
+            <span class="content pl-3"
+              >{{ item.ip }}
+              <br />
+            </span>
+          </div>
         </b-form-group>
       </div>
     </div>
-    <footer class="modal-footer justify-content-end btn-container">
-      <!-- <b-button variant="primary" @click="update">変更</b-button> -->
-      <router-link :to="{name: 'Confirm',params:{result: ipCountNapt,length: ipCountNaptLenght}}" tag="b-button" @click="update">変更</router-link>
-      <b-button variant="outline-primary" @click="cancel">キャンセル</b-button>
-    </footer>
   </div>
 </template>
 
 <script>
 export default {
-  props:{
-    result: Number,
-    length: Number,
-    Napt: Array
-  }
+  props: {
+    addNapt: Number,
+    naptLength: Number,
+    napt: Array,
+    naptDeletedArray: Array,
+    addNat: Number,
+    natLength: Number,
+    nat: Array,
+    natDeletedArray: Array,
+  },
 };
 </script>
 
