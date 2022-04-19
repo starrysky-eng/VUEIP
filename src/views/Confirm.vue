@@ -11,21 +11,21 @@
         <b-form-group class="col-8" label="NAPT用グローバルIP">
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
-          <b-form-input class="content" v-model="ipCountNapt" />
+          <span class="content" style="color: red">追加{{result - length}}個</span><br />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
-          <div v-for="item in form.Napt" :key="item">
+          <!-- <div v-for="item in form.Napt" :key="item">
             <span class="content pl-3"
               >{{ item }}
               <span v-if="form.Napt.length > 1" class="ml-3">
-                <button
+                <b-icon-dash-square
                   class="remoteIcon"
                   @click="removeNapt(item)"
-                >...</button>
+                />
               </span>
               <span v-else /> </span
             ><br />
-          </div>
+          </div> -->
         </b-form-group>
 <br>
 <br>
@@ -33,10 +33,9 @@
         <b-form-group class="col-8" label="NAT用グローバルIP">
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
-          <b-form-input class="content" v-model="ipCountNat" />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
-          <div v-for="item in form.Nat" :key="item">
+          <!-- <div v-for="item in form.Nat" :key="item">
             <span class="content pl-3"
               >{{ item }}
               <span v-if="form.Nat.length > 1" class="ml-3">
@@ -47,7 +46,7 @@
               </span>
               <span v-else /> </span
             ><br />
-          </div>
+          </div> -->
         </b-form-group>
       </div>
     </div>
@@ -60,71 +59,12 @@
 </template>
 
 <script>
-const GlobalIpNaptNat = {
-  NAPT: ["44.124.186.05/32", "44.124.186.06/32", "246.124.186.05/32"],
-  NAT: ["44.124.186.05/32", "44.124.186.06/32", "246.124.186.05/32"],
-};
-
 export default {
-  name: "MSGlobalIpModify",
-
-  data() {
-    return {
-      form: {
-        Napt: [],
-        Nat: [],
-      },
-      // 変更前のグローバルIP
-      ipNaptBefore: [],
-      ipNatBefore: [],
-      // 変更前のグローバルIP数
-      ipCountNaptBefore: 0,
-      ipCountNatBefore: 0,
-      // 変更後のグローバルIP数
-      ipCountNapt: 0,
-      ipCountNaptLenght: 0,
-      ipCountNat: 0,
-      // 削除されたIP（Napt）
-      delNapt: [],
-      // 削除されたIP（Nat）
-      delNat: [],
-      // 確認画面への転送データ
-      confirmdata: {
-        addNapt: "",
-        napt: [],
-        addNat: "",
-        nat: [],
-      },
-    };
-  },
-  async mounted() {
-    // グローバルIP
-    this.ipNaptBefore = GlobalIpNaptNat.NAPT;
-    this.ipNatBefore = GlobalIpNaptNat.NAT;
-    this.form.Napt = GlobalIpNaptNat.NAPT;
-    this.form.Nat = GlobalIpNaptNat.NAT;
-    // グローバルIP数
-    this.ipCountNaptBefore = GlobalIpNaptNat.NAPT.length;
-    this.ipCountNatBefore = GlobalIpNaptNat.NAT.length;
-    this.ipCountNapt = GlobalIpNaptNat.NAPT.length;
-    this.ipCountNat = GlobalIpNaptNat.NAT.length;
-    this.ipCountNaptLenght = GlobalIpNaptNat.NAPT.length;
-  },
-  methods: {
-    removeNapt(target) {
-      this.form.Napt.splice(this.form.Napt.indexOf(target),1)
-      
-    },
-    removeNat(target) {
-    },
-    cancel(){
-      
-    },
-    update() {
-      // 確認画面への転送データ
-      // 確認画面へ遷移
-    },
-  },
+  props:{
+    result: Number,
+    length: Number,
+    Napt: Array
+  }
 };
 </script>
 
@@ -149,4 +89,3 @@ export default {
   margin-left: 1em;
 }
 </style>
-
