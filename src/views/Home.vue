@@ -11,16 +11,16 @@
         <b-form-group class="col-8" label="NAPT用グローバルIP">
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
-          <b-form-input class="content" v-model="ipCountNapt" />
+          <b-form-input class="content" v-model="form.ipCountNapt" />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
-          <div v-for="item in form.Napt" :key="item.ip">
+          <div v-for="(item,index) in form.Napt" :key="index">
             <span class="content pl-3"
               >{{ item.ip }}
               <span v-if="form.Napt.length > 1" class="ml-3">
                 <b-icon-dash-square
                   class="remoteIcon"
-                  @click="removeNapt(item)"
+                  @click="removeNapt(index)"
                 />
               </span>
               <span v-else /> </span
@@ -33,16 +33,16 @@
         <b-form-group class="col-8" label="NAT用グローバルIP">
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
-          <b-form-input class="content" v-model="ipCountNat" />
+          <b-form-input class="content" v-model="form.ipCountNat" />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
-          <div v-for="item in form.Nat" :key="item">
+          <div v-for="(item,index) in form.Nat" :key="index">
             <span class="content pl-3"
               >{{ item.ip }}
               <span v-if="form.Nat.length > 1" class="ml-3">
                 <b-icon-dash-square
                   class="remoteIcon"
-                  @click="removeNat(item)"
+                  @click="removeNat(index)"
                 />
               </span>
               <span v-else /> </span
@@ -52,7 +52,7 @@
       </div>
     </div>
     <footer class="modal-footer justify-content-end btn-container">
-      <router-link
+      <!-- <router-link
         :to="{
           name: 'Confirm',
           params: {
@@ -69,7 +69,8 @@
         }"
         tag="b-button"
         >変更</router-link
-      >
+      > -->
+      <b-button variant="primary" @click="update">変更</b-button>
       <b-button variant="outline-primary" @click="cancel">キャンセル</b-button>
     </footer>
   </div>
@@ -95,18 +96,15 @@ export default {
   data() {
     return {
       form: {
+        ipCountNapt: 0,
+        ipCountNaptLenght: 0,
         Napt: [],
+        ipCountNat: 0,
+        ipCountNatLenght: 0,
         Nat: [],
+        delNapt: [],
+        delNat: [],
       },
-
-      ipCountNapt: 0,
-      ipCountNaptLenght: 0,
-      ipCountNat: 0,
-      ipCountNatLenght: 0,
-      // 削除されたIP（Napt）
-      delNapt: [],
-      // 削除されたIP（Nat）
-      delNat: [],
     };
   },
   async mounted() {
@@ -114,19 +112,28 @@ export default {
     this.form.Napt = GlobalIpNaptNat.NAPT;
     this.form.Nat = GlobalIpNaptNat.NAT;
     // グローバルIP数
-    this.ipCountNapt = GlobalIpNaptNat.NAPT.length;
-    this.ipCountNaptLenght = GlobalIpNaptNat.NAPT.length;
-    this.ipCountNat = GlobalIpNaptNat.NAT.length;
-    this.ipCountNatLenght = GlobalIpNaptNat.NAT.length;
+    this.form.ipCountNapt = GlobalIpNaptNat.NAPT.length;
+    this.form.ipCountNaptLenght = GlobalIpNaptNat.NAPT.length;
+    this.form.ipCountNat = GlobalIpNaptNat.NAT.length;
+    this.form.ipCountNatLenght = GlobalIpNaptNat.NAT.length;
   },
   methods: {
-    removeNapt(target) {
-      let naptResult = this.form.Napt.splice(this.form.Napt.indexOf(target), 1);
-      this.delNapt.push({ ip: naptResult[0].ip });
+    removeNapt(index) {
+      let naptResult = this.form.Napt.splice(index, 1);
+      this.form.delNapt.push({ ip: naptResult[0].ip });
     },
-    removeNat(target) {
-      let natResult = this.form.Nat.splice(this.form.Nat.indexOf(target), 1);
-      this.delNat.push({ ip: natResult[0].ip });
+    removeNat(index) {
+      let natResult = this.form.Nat.splice(index, 1);
+      this.form.delNat.push({ ip: natResult[0].ip });
+    },
+    cancel() {},
+    update() {
+      this.$router.push({
+        name: "Confirm",
+        params: {
+          resultData: this.form
+        }
+      });
     },
   },
 };

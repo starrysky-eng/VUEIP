@@ -12,13 +12,13 @@
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
           <span class="content" style="color: red"
-            >追加{{ addNapt - naptLength }}個 </span
+            >追加{{ resultData.ipCountNapt - resultData.ipCountNaptLenght }}個 </span
           ><br />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
           <div
-            v-for="item in naptDeletedArray"
-            :key="item.ip"
+            v-for="(item,index) in resultData.delNapt"
+            :key="index"
             style="color: red"
           >
             <span class="content pl-3"
@@ -26,7 +26,7 @@
               <br />
             </span>
           </div>
-          <div v-for="item in napt" :key="item.ip">
+          <div v-for="(item,index) in resultData.Napt" :key="index">
             <span class="content pl-3"
               >{{ item.ip }}
               <br />
@@ -40,13 +40,13 @@
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
           <span class="content" style="color: red"
-            >追加{{ addNat - natLength }}個 </span
+            >追加{{ resultData.ipCountNat - resultData.ipCountNatLenght }}個 </span
           ><br />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
           <div
-            v-for="item in natDeletedArray"
-            :key="item.ip"
+            v-for="(item,index) in resultData.delNat"
+            :key="index"
             style="color: red"
           >
             <span class="content pl-3"
@@ -54,7 +54,7 @@
               <br />
             </span>
           </div>
-          <div v-for="item in nat" :key="item.ip">
+          <div v-for="(item,index) in resultData.Nat" :key="index">
             <span class="content pl-3"
               >{{ item.ip }}
               <br />
@@ -69,14 +69,7 @@
 <script>
 export default {
   props: {
-    addNapt: Number,
-    naptLength: Number,
-    napt: Array,
-    naptDeletedArray: Array,
-    addNat: Number,
-    natLength: Number,
-    nat: Array,
-    natDeletedArray: Array,
+    resultData: Object
   },
 };
 </script>
