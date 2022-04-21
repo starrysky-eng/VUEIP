@@ -22,19 +22,24 @@
             },
             methods: {
                 async getUserData() {
-                    // let p = await fetch("https://api.github.com/users/deatiger");
-                    // p = await p.json();
-                    // this.userName = p.login;
+                    try {
+                        let p = await fetch("https://api.github.com/users/deatiger");
+                        p = await p.json();
+                        this.userName = p.login;
+                    } catch (error) {
+                        console.log(error);
+                    }
 
-                    let p = fetch("https://api.github.com/users/deatiger");
-                    p.then((userData) => {
-                        return userData.json();
-                        console.log(userData.json());
-                    }).then((jsonData) => {
-                        console.log(jsonData);
-                        this.userName = jsonData.login;
-                    })
 
+                    // let p = fetch("https://api.github.com/users/deatiger");
+                    // p.then((userData) => {
+                    //     return userData.json();
+                    // }).then((jsonData) => {
+                    //     console.log(jsonData);
+                    //     this.userName = jsonData.ad;
+                    // }).catch((errorMessage) => {
+                    //     console.log(errorMessage);
+                    // })
                 }
             }
         });
