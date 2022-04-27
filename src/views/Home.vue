@@ -14,9 +14,9 @@
           <b-form-input class="content" v-model="form.ipCountNapt" />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
-          <div v-for="(item,index) in form.Napt" :key="index">
+          <div v-for="(item, index) in form.Napt" :key="index">
             <span class="content pl-3"
-              >{{ item.ip }}
+              >{{ item }}
               <span v-if="form.Napt.length > 1" class="ml-3">
                 <b-icon-dash-square
                   class="remoteIcon"
@@ -36,9 +36,9 @@
           <b-form-input class="content" v-model="form.ipCountNat" />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
-          <div v-for="(item,index) in form.Nat" :key="index">
+          <div v-for="(item, index) in form.Nat" :key="index">
             <span class="content pl-3"
-              >{{ item.ip }}
+              >{{ item }}
               <span v-if="form.Nat.length > 1" class="ml-3">
                 <b-icon-dash-square
                   class="remoteIcon"
@@ -52,90 +52,74 @@
       </div>
     </div>
     <footer class="modal-footer justify-content-end btn-container">
-      <!-- <router-link
+      <router-link
         :to="{
           name: 'Confirm',
           params: {
-            addNapt: ipCountNapt,
-            naptLength: ipCountNaptLenght,
-            napt: form.Napt,
-            naptDeletedArray: delNapt,
-
-            addNat: ipCountNat,
-            natLength: ipCountNatLenght,
-            nat: form.Nat,
-            natDeletedArray: delNat,
+            resultData: form,
           },
         }"
         tag="b-button"
         >変更</router-link
-      > -->
-      <b-button variant="primary" @click="update">変更</b-button>
+      >
+      <!-- <b-button variant="primary" @click="update">変更</b-button> -->
       <b-button variant="outline-primary" @click="cancel">キャンセル</b-button>
     </footer>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
 const GlobalIpNaptNat = {
-  NAPT: [
-    { ip: "44.124.186.05/32" },
-    { ip: "44.124.186.06/32" },
-    { ip: "246.124.186.05/32" },
-  ],
-  NAT: [
-    { ip: "44.124.186.05/32" },
-    { ip: "44.124.186.06/32" },
-    { ip: "246.124.186.05/32" },
-  ],
+  NAPT: ["44.124.186.05/32", "44.124.186.06/32", "246.124.186.05/32"],
+  NAT: ["44.124.186.05/32", "44.124.186.06/32", "246.124.186.05/32"],
 };
 
-export default {
+@Component({
   name: "MSGlobalIpModify",
-  data() {
-    return {
-      form: {
-        ipCountNapt: 0,
-        ipCountNaptLenght: 0,
-        Napt: [],
-        ipCountNat: 0,
-        ipCountNatLenght: 0,
-        Nat: [],
-        delNapt: [],
-        delNat: [],
-      },
-    };
-  },
+})
+export default class Home extends Vue {
+  form = {
+    ipCountNapt: 0,
+    ipCountNaptLenght: 0,
+    Napt: [] as string[],
+    ipCountNat: 0,
+    ipCountNatLenght: 0,
+    Nat: [] as string[],
+    delNapt: [] as string[],
+    delNat: [] as string[],
+  };
   async mounted() {
     // グローバルIP
     this.form.Napt = GlobalIpNaptNat.NAPT;
+    console.log(this.form.Napt);
     this.form.Nat = GlobalIpNaptNat.NAT;
     // グローバルIP数
     this.form.ipCountNapt = GlobalIpNaptNat.NAPT.length;
     this.form.ipCountNaptLenght = GlobalIpNaptNat.NAPT.length;
     this.form.ipCountNat = GlobalIpNaptNat.NAT.length;
     this.form.ipCountNatLenght = GlobalIpNaptNat.NAT.length;
-  },
-  methods: {
-    removeNapt(index) {
-      let naptResult = this.form.Napt.splice(index, 1);
-      this.form.delNapt.push({ ip: naptResult[0].ip });
-    },
-    removeNat(index) {
-      let natResult = this.form.Nat.splice(index, 1);
-      this.form.delNat.push({ ip: natResult[0].ip });
-    },
-    cancel() {},
-    update() {
-      this.$router.push({
-        name: "Confirm",
-        params: {
-          resultData: this.form
-        }
-      });
-    },
-  },
-};
+  }
+
+  public removeNapt(index: number): void {
+    let naptResult = this.form.Napt.splice(index, 1);
+    this.form.delNapt.push(naptResult[0]);
+  }
+  public removeNat(index: number): void {
+    let natResult = this.form.Nat.splice(index, 1);
+    this.form.delNat.push(natResult[0]);
+  }
+  public cancel(): void {}
+  // public update(): void {
+  //   this.$router.push({
+  //     name: "Confirm",
+  //     params: {
+  //       resultData: this.form.toString(),
+  //     },
+  //   });
+  // }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -12,23 +12,25 @@
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
           <span class="content" style="color: red"
-            >追加{{ resultData.ipCountNapt - resultData.ipCountNaptLenght }}個 </span
+            >追加{{
+              resultData.ipCountNapt - resultData.ipCountNaptLenght
+            }}個 </span
           ><br />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
           <div
-            v-for="(item,index) in resultData.delNapt"
+            v-for="(item, index) in resultData.delNapt"
             :key="index"
             style="color: red"
           >
             <span class="content pl-3"
-              >{{ item.ip }}
+              >{{ item }}
               <br />
             </span>
           </div>
-          <div v-for="(item,index) in resultData.Napt" :key="index">
+          <div v-for="(item, index) in resultData.Napt" :key="index">
             <span class="content pl-3"
-              >{{ item.ip }}
+              >{{ item }}
               <br />
             </span>
           </div>
@@ -40,23 +42,25 @@
           <span class="content">現在 1個/ 上限 12個</span><br />
           <span class="content">グローバルIP数</span><br />
           <span class="content" style="color: red"
-            >追加{{ resultData.ipCountNat - resultData.ipCountNatLenght }}個 </span
+            >追加{{
+              resultData.ipCountNat - resultData.ipCountNatLenght
+            }}個 </span
           ><br />
           <span class="content">払出済グローバルIP</span><br />
           <span class="content pl-3">グローバルIP</span><br />
           <div
-            v-for="(item,index) in resultData.delNat"
+            v-for="(item, index) in resultData.delNat"
             :key="index"
             style="color: red"
           >
             <span class="content pl-3"
-              >{{ item.ip }}
+              >{{ item }}
               <br />
             </span>
           </div>
-          <div v-for="(item,index) in resultData.Nat" :key="index">
+          <div v-for="(item, index) in resultData.Nat" :key="index">
             <span class="content pl-3"
-              >{{ item.ip }}
+              >{{ item }}
               <br />
             </span>
           </div>
@@ -66,12 +70,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    resultData: Object
-  },
-};
+<script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
+@Component
+export default class Confirm extends Vue {
+  @Prop()
+  resultData?: {};
+}
 </script>
 
 <style lang="scss" scoped>
