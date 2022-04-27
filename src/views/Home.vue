@@ -92,7 +92,6 @@ const GlobalIpNaptNat = {
 
 export default {
   name: "MSGlobalIpModify",
-
   data() {
     return {
       form: {
