@@ -52,7 +52,7 @@
       </div>
     </div>
     <footer class="modal-footer justify-content-end btn-container">
-      <router-link
+      <!-- <router-link
         :to="{
           name: 'Confirm',
           params: {
@@ -61,8 +61,8 @@
         }"
         tag="b-button"
         >変更</router-link
-      >
-      <!-- <b-button variant="primary" @click="update">変更</b-button> -->
+      > -->
+      <b-button variant="primary" @click="update">変更</b-button>
       <b-button variant="outline-primary" @click="cancel">キャンセル</b-button>
     </footer>
   </div>
@@ -70,6 +70,16 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+interface sendData {
+  ipCountNapt: number;
+  ipCountNaptLenght: number;
+  Napt: string[];
+  ipCountNat: number;
+  ipCountNatLenght: number;
+  Nat: string[];
+  delNapt: string[];
+  delNat: string[];
+}
 
 const GlobalIpNaptNat = {
   NAPT: ["44.124.186.05/32", "44.124.186.06/32", "246.124.186.05/32"],
@@ -80,26 +90,26 @@ const GlobalIpNaptNat = {
   name: "MSGlobalIpModify",
 })
 export default class Home extends Vue {
-  form = {
+  form:sendData = {
     ipCountNapt: 0,
     ipCountNaptLenght: 0,
-    Napt: [] as string[],
+    Napt: [],
     ipCountNat: 0,
     ipCountNatLenght: 0,
-    Nat: [] as string[],
-    delNapt: [] as string[],
-    delNat: [] as string[],
+    Nat: [],
+    delNapt: [],
+    delNat: [],
   };
   async mounted() {
     // グローバルIP
     this.form.Napt = GlobalIpNaptNat.NAPT;
-    console.log(this.form.Napt);
     this.form.Nat = GlobalIpNaptNat.NAT;
     // グローバルIP数
     this.form.ipCountNapt = GlobalIpNaptNat.NAPT.length;
     this.form.ipCountNaptLenght = GlobalIpNaptNat.NAPT.length;
     this.form.ipCountNat = GlobalIpNaptNat.NAT.length;
     this.form.ipCountNatLenght = GlobalIpNaptNat.NAT.length;
+    console.log(JSON.stringify (this.form))
   }
 
   public removeNapt(index: number): void {
@@ -111,14 +121,14 @@ export default class Home extends Vue {
     this.form.delNat.push(natResult[0]);
   }
   public cancel(): void {}
-  // public update(): void {
-  //   this.$router.push({
-  //     name: "Confirm",
-  //     params: {
-  //       resultData: this.form.toString(),
-  //     },
-  //   });
-  // }
+  public update(): void {
+    this.$router.push({
+      name: "Confirm",
+      params: {
+        message: JSON.stringify (this.form),
+      },
+    });
+  }
 }
 </script>
 

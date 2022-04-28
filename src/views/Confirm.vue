@@ -74,8 +74,11 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component
 export default class Confirm extends Vue {
-  @Prop()
-  resultData?: {};
+  @Prop() public message!: string;
+  resultData ={}
+  created() {
+    this.resultData= JSON.parse(this.message)
+  }
 }
 </script>
 
